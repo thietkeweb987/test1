@@ -1,0 +1,287 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee / Mentor Dashboard</title>
+    <link rel="stylesheet" href="~/GiaoDien/page 2.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="topbar-brand">MENTOR PORTAL</div>
+        <ul class="topbar-menu">
+            <li class="active" id="menu-list" onclick="navigateToDashboard()">
+                <a><i>📋</i> <span>Mentees List</span></a>
+            </li>
+            <li class="logout-btn" onclick="handleLogout()">
+                <a><i>🚪</i> <span>Log Out</span></a>
+            </li>
+        </ul>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+
+            <div class="profile-global">
+                <div>
+                    <h2>Hello Jesse Marsch</h2>
+                    <p><strong>Bộ Phận:</strong> Dev (Mentor)</p>
+                </div>
+            </div>
+
+            <div id="intern-list-view">
+                <h3>Danh sách Intern đang hướng dẫn</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Name</th>
+                            <th>Bộ Phận</th>
+                            <th>Ngày Start</th>
+                            <th>Ngày còn lại</th>
+                            <th>View</th>
+                            <th>Complete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Milan Borjan</strong></td>
+                            <td>Dev</td>
+                            <td>5/12/2026</td>
+                            <td>365</td>
+                            <td><button class="btn-view" onclick="openInternDetail('Milan Borjan', 'milan.b@company.com', '0901.234.567')">View</button></td>
+                            <td><span class="badge">Complete</span></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Alphonso Davies</strong></td>
+                            <td>Dev</td>
+                            <td>10/01/2026</td>
+                            <td>240</td>
+                            <td><button class="btn-view" onclick="openInternDetail('Alphonso Davies', 'davies.a@company.com', '0911.999.888')">View</button></td>
+                            <td><span class="badge">Complete</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="intern-detail-view" style="display: none;">
+                <button class="back-btn" onclick="navigateToDashboard()">⬅ Trở lại danh sách</button>
+
+                <div class="split-layout">
+                    <div class="intern-profile-card">
+                        <h4 id="target-intern-name">Milan Borjan</h4>
+                        <div class="dept">Intern - Dev Department</div>
+
+                        <div class="info-list">
+                            <p><strong>Email:</strong> <span id="target-intern-email">milan@gmail.com</span></p>
+                            <p><strong>Phone:</strong> <span id="target-intern-phone">0905 123 456</span></p>
+                        </div>
+
+                        <button class="btn-action" onclick="openActivityModal('create')">✍ Ghi nhận hoạt động</button>
+                    </div>
+
+                    <div class="activity-container">
+                        <h3>Lịch sử hoạt động của Intern</h3>
+
+                        <div class="activity-card">
+                            <div class="activity-header">
+                                <span class="activity-title">Hoạt động 1: Nghiên cứu cấu trúc Dự án</span>
+                                <span class="badge" style="background:#e2e8f0; color:#334155">Task #101</span>
+                            </div>
+                            <div class="activity-meta">
+                                <div>📍 <strong>Địa điểm:</strong> Phòng họp tầng 2</div>
+                                <div>⏱ <strong>Thời gian làm:</strong> 4 tiếng</div>
+                                <div>📅 <strong>Ngày giờ:</strong> 16/05/2026 - 08:30</div>
+                            </div>
+                            <div class="activity-comment">
+                                <strong>Comment từ Intern:</strong> "Nắm bắt cấu trúc thư mục code tốt, cần đọc kỹ thêm tài liệu thiết kế database."
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-card view" onclick="openActivityModal('view', 1)">View</button>
+                                <button class="btn-card edit" onclick="openActivityModal('edit', 1)">Edit</button>
+                            </div>
+                        </div>
+
+                        <div class="activity-card">
+                            <div class="activity-header">
+                                <span class="activity-title">Hoạt động 2: Fix bug UI trang Dashboard</span>
+                                <span class="badge" style="background:#e2e8f0; color:#334155">Task #102</span>
+                            </div>
+                            <div class="activity-meta">
+                                <div>📍 <strong>Địa điểm:</strong> Khu làm việc khu A</div>
+                                <div>⏱ <strong>Thời gian làm:</strong> 2.5 tiếng</div>
+                                <div>📅 <strong>Ngày giờ:</strong> 16/05/2026 - 14:00</div>
+                            </div>
+                            <div class="activity-comment">
+                                <strong>Comment từ Intern:</strong> "Sửa giao diện responsive rất chuẩn xác, code sạch sẽ."
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-card view" onclick="openActivityModal('view', 2)">View</button>
+                                <button class="btn-card edit" onclick="openActivityModal('edit', 2)">Edit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="activity-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h4 id="modal-title">Ghi nhận hoạt động công việc</h4>
+            </div>
+
+            <form id="activity-form" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label>Tên hoạt động</label>
+                    <input type="text" id="form-name" required placeholder="Ví dụ: Review code, Fix Bug UI...">
+                </div>
+
+                <div class="form-group">
+                    <label>Địa điểm</label>
+                    <input type="text" id="form-location" required placeholder="Ví dụ: Phòng họp 2, Remote...">
+                </div>
+
+                <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Ngày giờ thực hiện</label>
+                        <input type="datetime-local" id="form-datetime" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Thời lượng (Bao lâu)</label>
+                        <input type="text" id="form-duration" required placeholder="Ví dụ: 3 tiếng, 45 phút...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Miêu tả chi tiết công việc</label>
+                    <textarea id="form-desc" placeholder="Mô tả tóm tắt nội dung Intern đã thực hiện..."></textarea>
+                </div>
+
+                <div class="form-group" style="border-top: 2px dashed #cbd5e1; padding-top: 15px; margin-top: 20px;">
+                    <label style="color: var(--primary-color);">💬 Comment / Note phản hồi từ Intern (Chỉ xem):</label>
+                    <textarea id="form-comment" disabled placeholder="Intern chưa để lại phản hồi cho hoạt động này..." style="background:#f1f5f9; font-style:italic;"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-form cancel" onclick="closeActivityModal()">Cancel</button>
+                    <button type="submit" id="btn-submit-form" class="btn-form submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const mockDataActivities = {
+            1: {
+                name: "Nghiên cứu cấu trúc Dự án",
+                location: "Phòng họp tầng 2",
+                datetime: "2026-05-16T08:30",
+                duration: "4 tiếng",
+                desc: "Đọc hiểu cấu trúc source code gốc của hệ thống quản lý.",
+                comment: "Nắm bắt cấu trúc thư mục code tốt, cần đọc kỹ thêm tài liệu thiết kế database."
+            },
+            2: {
+                name: "Fix bug UI trang Dashboard",
+                location: "Khu làm việc khu A",
+                datetime: "2026-05-16T14:00",
+                duration: "2.5 tiếng",
+                desc: "Sửa lỗi tràn layout trên thiết bị di động của danh sách bảng biểu.",
+                comment: "Sửa giao diện responsive rất chuẩn xác, code sạch sẽ."
+            }
+        };
+
+        function navigateToDashboard() {
+            document.getElementById('intern-detail-view').style.display = 'none';
+            document.getElementById('intern-list-view').style.display = 'block';
+        }
+
+        function openInternDetail(name, email, phone) {
+            document.getElementById('intern-list-view').style.display = 'none';
+            document.getElementById('intern-detail-view').style.display = 'block';
+
+            document.getElementById('target-intern-name').innerText = name;
+            document.getElementById('target-intern-email').innerText = email;
+            document.getElementById('target-intern-phone').innerText = phone;
+        }
+
+        function openActivityModal(mode, id = null) {
+            const modal = document.getElementById('activity-modal');
+            const title = document.getElementById('modal-title');
+            const submitBtn = document.getElementById('btn-submit-form');
+
+            modal.classList.add('open');
+
+            if (mode === 'create') {
+                title.innerText = "✍ Ghi nhận hoạt động mới";
+                submitBtn.style.display = "block";
+                submitBtn.innerText = "Submit";
+                document.getElementById('activity-form').reset();
+
+                enableFormInputs(true);
+                document.getElementById('form-comment').disabled = true;
+            }
+            else if (mode === 'view' && id) {
+                title.innerText = "🔍 Chi tiết hoạt động";
+                submitBtn.style.display = "none";
+                fillFormData(mockDataActivities[id]);
+                enableFormInputs(false);
+            }
+            else if (mode === 'edit' && id) {
+                title.innerText = "✏ Chỉnh sửa thông tin hoạt động";
+                submitBtn.style.display = "block";
+                submitBtn.innerText = "Save Changes";
+                fillFormData(mockDataActivities[id]);
+
+                enableFormInputs(true);
+                document.getElementById('form-comment').disabled = true;
+            }
+        }
+
+        function closeActivityModal() {
+            document.getElementById('activity-modal').classList.remove('open');
+        }
+
+        function fillFormData(data) {
+            document.getElementById('form-name').value = data.name;
+            document.getElementById('form-location').value = data.location;
+            document.getElementById('form-datetime').value = data.datetime;
+            document.getElementById('form-duration').value = data.duration;
+            document.getElementById('form-desc').value = data.desc;
+            document.getElementById('form-comment').value = data.comment || "";
+        }
+
+        function enableFormInputs(status) {
+            const inputs = ['form-name', 'form-location', 'form-datetime', 'form-duration', 'form-desc'];
+            inputs.forEach(id => {
+                document.getElementById(id).disabled = !status;
+            });
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            alert("Hệ thống ASP.NET Web API sẽ ghi nhận xử lý luồng dữ liệu JSON này thành công!");
+            closeActivityModal();
+        }
+
+        function handleLogout() {
+            const confirmLogout = confirm("Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?");
+            if (confirmLogout) {
+                alert("Đang đăng xuất khỏi hệ thống...");
+                window.location.href = "login.html";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Dashboard</title>
+    <link rel="stylesheet" href="~/GiaoDien/page 3.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="topbar-brand">INTERN PORTAL</div>
+        <ul class="topbar-menu">
+            <li class="active">
+                <a href="#"><i>📋</i> <span>My Activities</span></a>
+            </li>
+            <li class="logout-btn" onclick="handleLogout()">
+                <a><i>🚪</i> <span>Log Out</span></a>
+            </li>
+        </ul>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+
+            <div class="profile-global">
+                <div class="profile-info">
+                    <div>
+                        <h2>Milan Borjan (Intern)</h2>
+                        <p><strong>Bộ Phận Đang Làm:</strong> Dev Department</p>
+                    </div>
+                </div>
+
+                <div>
+                    <span id="txt-status" class="status-badge status-learning">Trạng thái: Đang Hướng Dẫn</span>
+                    <button onclick="toggleCompleteStatusTest()" style="margin-left:10px; font-size:11px; padding:4px; cursor:pointer;">(Test: Toggle Complete)</button>
+                </div>
+            </div>
+
+            <div class="split-layout">
+
+                <div class="mentor-profile-card">
+                    <p style="font-size:12px; font-weight:bold; color:#64748b; margin-bottom:10px; text-transform:uppercase;">Người hướng dẫn của bạn</p>
+
+                    <h4>Jesse Marsch</h4>
+                    <div class="role-text">Senior Developer / Mentor</div>
+
+                    <div class="info-list">
+                        <p><strong>Email:</strong> jesse.m@company.com</p>
+                        <p><strong>Phone:</strong> 0933.888.999</p>
+                        <p><strong>Vị trí ngồi:</strong> Phòng Kỹ Thuật - Khu B</p>
+                    </div>
+
+                    <button id="btn-survey-id" class="btn-survey" disabled onclick="openSurveyModal()">
+                        📝 Tham gia khảo sát
+                    </button>
+                    <small id="survey-hint" style="color:#ef4444; font-size:11px; display:block; margin-top:8px;">
+                        *Chỉ mở khi Mentor xác nhận Hoàn Thành hướng dẫn.
+                    </small>
+                </div>
+
+                <div class="activity-container">
+                    <h3>Nhật ký hoạt động của tôi</h3>
+
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <span class="activity-title">Hoạt động 1: Nghiên cứu cấu trúc Dự án</span>
+                            <span class="status-badge" style="background:#e2e8f0; color:#334155; font-size:12px; padding:3px 10px;">Hoạt động 1</span>
+                        </div>
+                        <div class="activity-meta">
+                            <div>📍 <strong>Địa điểm:</strong> Phòng họp tầng 2</div>
+                            <div>⏱ <strong>Thời gian làm:</strong> 4 tiếng</div>
+                            <div>📅 <strong>Ngày giờ:</strong> 16/05/2026 - 08:30</div>
+                        </div>
+                        <div class="activity-comment">
+                            <strong>Phản hồi từ Mentor:</strong> "Nắm bắt cấu trúc thư mục code tốt, cần đọc kỹ thêm tài liệu thiết kế database."
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-card view" onclick="openInternCommentModal(1)">
+                                🔍 View & Comment
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <span class="activity-title">Hoạt động 2: Fix bug UI trang Dashboard</span>
+                            <span class="status-badge" style="background:#e2e8f0; color:#334155; font-size:12px; padding:3px 10px;">Hoạt động 2</span>
+                        </div>
+                        <div class="activity-meta">
+                            <div>📍 <strong>Địa điểm:</strong> Khu làm việc khu A</div>
+                            <div>⏱ <strong>Thời gian làm:</strong> 2.5 tiếng</div>
+                            <div>📅 <strong>Ngày giờ:</strong> 16/05/2026 - 14:00</div>
+                        </div>
+                        <div class="activity-comment">
+                            <strong>Phản hồi từ Mentor:</strong> "Sửa giao diện responsive rất chuẩn xác, code sạch sẽ."
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-card view" onclick="openInternCommentModal(2)">
+                                🔍 View & Comment
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="activity-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h4>🔍 Chi tiết hoạt động & Phản hồi</h4>
+                <p style="font-size: 13px; color: #64748b; margin-top: 4px;">Thông tin do Mentor thiết lập (Chỉ xem). Bạn có thể để lại phản hồi ở mục dưới cùng.</p>
+            </div>
+
+            <form id="activity-form" onsubmit="handleInternCommentSubmit(event)">
+                <div class="form-group">
+                    <label>Tên hoạt động</label>
+                    <input type="text" id="form-name" disabled style="background:#f1f5f9;">
+                </div>
+
+                <div class="form-group">
+                    <label>Địa điểm</label>
+                    <input type="text" id="form-location" disabled style="background:#f1f5f9;">
+                </div>
+
+                <div class="form-group-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Ngày giờ thực hiện</label>
+                        <input type="datetime-local" id="form-datetime" disabled style="background:#f1f5f9;">
+                    </div>
+                    <div class="form-group">
+                        <label>Thời lượng</label>
+                        <input type="text" id="form-duration" disabled style="background:#f1f5f9;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Miêu tả chi tiết công việc từ Mentor</label>
+                    <textarea id="form-desc" disabled style="background:#f1f5f9; min-height: 60px;"></textarea>
+                </div>
+
+                <div class="form-group" style="border-top: 2px dashed #0078d4; padding-top: 15px; margin-top: 20px;">
+                    <label style="color: var(--primary-color); font-size: 15px;">✍ Ý kiến / Phản hồi của Intern (Bạn):</label>
+                    <textarea id="form-comment" placeholder="Nhập câu hỏi, báo cáo tiến độ hoặc ghi chú của bạn tại đây..." required style="border: 1px solid var(--primary-color);"></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-form cancel" onclick="closeModal('activity-modal')">Cancel</button>
+                    <button type="submit" class="btn-form submit">Save Comment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="survey-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h4>📝 Khảo sát kết thúc kỳ Thực tập</h4>
+                <p style="font-size:13px; color:#64748b; margin-top:4px;">Ý kiến của bạn sẽ giúp cải thiện chất lượng quản lý.</p>
+            </div>
+
+            <form id="survey-form" onsubmit="handleSurveySubmit(event)">
+                <div class="form-group">
+                    <label>Bạn đánh giá điểm số cho Mentor của mình thế nào?</label>
+                    <select id="survey-score" required>
+                        <option value="5">⭐⭐⭐⭐⭐ 5/5 - Rất xuất sắc và tận tình</option>
+                        <option value="4">⭐⭐⭐⭐ 4/5 - Tốt, hỗ trợ nhiệt tình</option>
+                        <option value="3">⭐⭐⭐ 3/5 - Bình thường, đủ yêu cầu</option>
+                        <option value="2">⭐⭐ 2/5 - Ít tương tác, hỗ trợ chậm</option>
+                        <option value="1">⭐ 1/5 - Không hỗ trợ công việc</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Ý kiến đóng góp / Phản hồi chi tiết dành cho Người hướng dẫn:</label>
+                    <textarea id="survey-feedback" required placeholder="Nhập cảm nghĩ, đề xuất hoặc khó khăn bạn gặp phải trong kỳ thực tập..."></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-form cancel" onclick="closeModal('survey-modal')">Cancel</button>
+                    <button type="submit" class="btn-form submit" style="background:var(--purple-color)">Submit Survey</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const mockDataActivities = {
+            1: {
+                name: "Nghiên cứu cấu trúc Dự án",
+                location: "Phòng họp tầng 2",
+                datetime: "2026-05-16T08:30",
+                duration: "4 tiếng",
+                desc: "Đọc hiểu cấu trúc source code gốc của hệ thống quản lý theo phân công.",
+                comment: "Nắm bắt cấu trúc thư mục code tốt, cần đọc kỹ thêm tài liệu thiết kế database."
+            },
+            2: {
+                name: "Fix bug UI trang Dashboard",
+                location: "Khu làm việc khu A",
+                datetime: "2026-05-16T14:00",
+                duration: "2.5 tiếng",
+                desc: "Sửa lỗi tràn màn hình trên thiết bị di động ở bảng danh sách.",
+                comment: "Sửa giao diện responsive rất chuẩn xác, code sạch sẽ."
+            }
+        };
+
+        let isMentorCompleted = false;
+
+        function openInternCommentModal(id) {
+            const modal = document.getElementById('activity-modal');
+            modal.classList.add('open');
+
+            const data = mockDataActivities[id];
+            document.getElementById('form-name').value = data.name;
+            document.getElementById('form-location').value = data.location;
+            document.getElementById('form-datetime').value = data.datetime;
+            document.getElementById('form-duration').value = data.duration;
+            document.getElementById('form-desc').value = data.desc;
+
+            document.getElementById('form-comment').value = data.comment || "";
+            modal.setAttribute('data-current-id', id);
+        }
+
+        function openSurveyModal() {
+            if (!isMentorCompleted) return;
+            document.getElementById('survey-modal').classList.add('open');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('open');
+        }
+
+        function handleInternCommentSubmit(event) {
+            event.preventDefault();
+            const modal = document.getElementById('activity-modal');
+            const currentId = modal.getAttribute('data-current-id');
+            const newComment = document.getElementById('form-comment').value;
+
+            if (mockDataActivities[currentId]) {
+                mockDataActivities[currentId].comment = newComment;
+            }
+
+            alert("Bình luận phản hồi của Intern đã được lưu thành công!");
+            closeModal('activity-modal');
+        }
+
+        function handleSurveySubmit(event) {
+            event.preventDefault();
+            alert("Cảm ơn bạn! Phiếu khảo sát đánh giá Mentor đã được gửi lên hệ thống thành công.");
+            closeModal('survey-modal');
+            document.getElementById('survey-form').reset();
+        }
+
+        function handleLogout() {
+            if (confirm("Bạn muốn đăng xuất khỏi tài khoản Intern?")) {
+                window.location.href = "login.html";
+            }
+        }
+
+        function toggleCompleteStatusTest() {
+            isMentorCompleted = !isMentorCompleted;
+
+            const btnSurvey = document.getElementById('btn-survey-id');
+            const hintText = document.getElementById('survey-hint');
+            const badgeStatus = document.getElementById('txt-status');
+
+            if (isMentorCompleted) {
+                badgeStatus.innerText = "Trạng thái: Đã Hoàn Thành (Complete)";
+                badgeStatus.className = "status-badge status-complete";
+                btnSurvey.disabled = false;
+                hintText.style.color = "var(--success-color)";
+                hintText.innerText = "✔ Bạn đủ điều kiện tham gia khảo sát.";
+            } else {
+                badgeStatus.innerText = "Trạng thái: Đang Hướng Dẫn";
+                badgeStatus.className = "status-badge status-learning";
+                btnSurvey.disabled = true;
+                hintText.style.color = "#ef4444";
+                hintText.innerText = "*Chỉ mở khi Mentor xác nhận Hoàn Thành hướng dẫn.";
+            }
+        }
+    </script>
+</body>
+</html>

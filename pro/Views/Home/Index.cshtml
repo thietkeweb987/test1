@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Management System</title>
+    <link rel="stylesheet" href="~/GiaoDien/index.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i>💻</i> <span>Portal System</span>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a onclick="openModal('links-modal')">Link hữu ích</a></li>
+                <li><a onclick="openModal('contact-modal')">Liên hệ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero-container">
+            <h1>
+                <span>Chào mừng</span>
+                <span>đến với</span>
+                <span>hệ thống</span>
+                <span>quản lý</span>
+                <span>tương tác</span>
+                <span>giữa</span>
+                <span>Mentor</span>
+                <span>&</span>
+                <span>Intern</span>
+            </h1>
+
+            <p>Hệ thống hỗ trợ kết nối, theo dõi tiến độ công việc, ghi nhận nhật ký hoạt động thực tế và đánh giá chất lượng đào tạo giữa Nhân viên hướng dẫn và Thực tập sinh.</p>
+
+            <a href="~/Home/Login" class="btn-login-gate">
+                Truy cập hệ thống <span>➔</span>
+            </a>
+        </div>
+    </main>
+
+    <div id="links-modal" class="modal-overlay" onclick="closeModalOnOverlay(event, 'links-modal')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h4>🔗 Link Hữu Ích Của Hệ Thống</h4>
+                <button class="close-modal-btn" onclick="closeModal('links-modal')">✕</button>
+            </div>
+            <ul class="useful-links-list">
+                <li><a href="https://learn.microsoft.com/vi-vn/aspnet/core" target="_blank">📄 Tài liệu ASP.NET Core API tham khảo ➔</a></li>
+                <li><a href="#" onclick="alert('File hướng dẫn sử dụng hệ thống PDF đang được cập nhật...');">📘 Hướng dẫn dành cho Mentor & Intern ➔</a></li>
+                <li><a href="#" onclick="alert('Quy chế thực tập doanh nghiệp chuẩn hóa năm 2026.');">🏢 Quy chế thực tập & An toàn thông tin văn phòng ➔</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="modal-overlay" onclick="closeModalOnOverlay(event, 'contact-modal')">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h4>📞 Thông Tin Phòng Ban Hỗ Trợ</h4>
+                <button class="close-modal-btn" onclick="closeModal('contact-modal')">✕</button>
+            </div>
+            <div class="contact-item">
+                <i>🏢</i> <span><b>Phòng Nhân sự (HR Department):</b> Tầng 5, Khu làm việc A</span>
+            </div>
+            <div class="contact-item">
+                <i>✉</i> <span><b>Email hỗ trợ kỹ thuật:</b> support.portal@company.com</span>
+            </div>
+            <div class="contact-item">
+                <i>☎</i> <span><b>Hotline nội bộ:</b> (028) 3844 7779 (Ext: 102)</span>
+            </div>
+            <p style="font-size:12px; color:#94a3b8; margin-top:15px; font-style:italic;">*Mọi sự cố về tài khoản login hoặc lỗi phân quyền hệ thống xin vui lòng gửi email trực tiếp để được IT xử lý.</p>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('open');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('open');
+        }
+
+        function closeModalOnOverlay(event, modalId) {
+            if (event.target.id === modalId) {
+                closeModal(modalId);
+            }
+        }
+    </script>
+</body>
+</html>
