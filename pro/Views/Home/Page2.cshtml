@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
@@ -9,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee / Mentor Dashboard</title>
-    <link rel="stylesheet" href="~/GiaoDien/page 2.css">
+    <link rel="stylesheet" href="@Url.Content("~/giaodien/page 2.css")">
 </head>
 <body>
 
@@ -19,8 +18,8 @@
             <li class="active" id="menu-list" onclick="navigateToDashboard()">
                 <a><i>📋</i> <span>Mentees List</span></a>
             </li>
-            <li class="logout-btn" onclick="handleLogout()">
-                <a><i>🚪</i> <span>Log Out</span></a>
+            <li class="logout-btn">
+                <a href="/Home/Logout"><i>🚪</i> <span>Log Out</span></a>
             </li>
         </ul>
     </header>
@@ -73,9 +72,10 @@
             </div>
 
             <div id="intern-detail-view" style="display: none;">
-                <button class="back-btn" onclick="navigateToDashboard()">⬅ Trở lại danh sách</button>
+                <button class="back-btn" onclick="navigateToDashboard()" style="margin-bottom: 20px; padding: 8px 16px; background: #64748b; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">⬅ Trở lại danh sách</button>
 
                 <div class="split-layout">
+
                     <div class="intern-profile-card">
                         <h4 id="target-intern-name">Milan Borjan</h4>
                         <div class="dept">Intern - Dev Department</div>
@@ -85,51 +85,17 @@
                             <p><strong>Phone:</strong> <span id="target-intern-phone">0905 123 456</span></p>
                         </div>
 
-                        <button class="btn-action" onclick="openActivityModal('create')">✍ Ghi nhận hoạt động</button>
+                        <button class="btn-action" onclick="openActivityModal('create')" style="width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">✍ Ghi nhận hoạt động</button>
                     </div>
 
                     <div class="activity-container">
                         <h3>Lịch sử hoạt động của Intern</h3>
 
-                        <div class="activity-card">
-                            <div class="activity-header">
-                                <span class="activity-title">Hoạt động 1: Nghiên cứu cấu trúc Dự án</span>
-                                <span class="badge" style="background:#e2e8f0; color:#334155">Task #101</span>
-                            </div>
-                            <div class="activity-meta">
-                                <div>📍 <strong>Địa điểm:</strong> Phòng họp tầng 2</div>
-                                <div>⏱ <strong>Thời gian làm:</strong> 4 tiếng</div>
-                                <div>📅 <strong>Ngày giờ:</strong> 16/05/2026 - 08:30</div>
-                            </div>
-                            <div class="activity-comment">
-                                <strong>Comment từ Intern:</strong> "Nắm bắt cấu trúc thư mục code tốt, cần đọc kỹ thêm tài liệu thiết kế database."
-                            </div>
-                            <div class="card-actions">
-                                <button class="btn-card view" onclick="openActivityModal('view', 1)">View</button>
-                                <button class="btn-card edit" onclick="openActivityModal('edit', 1)">Edit</button>
-                            </div>
+                        <div id="mentor-log-container" class="activity-container" style="gap: 20px; width: 100%;">
+                            <p style="text-align:center; color:#64748b; padding: 20px;">Đang tải danh sách hoạt động từ hệ thống C#...</p>
                         </div>
-
-                        <div class="activity-card">
-                            <div class="activity-header">
-                                <span class="activity-title">Hoạt động 2: Fix bug UI trang Dashboard</span>
-                                <span class="badge" style="background:#e2e8f0; color:#334155">Task #102</span>
-                            </div>
-                            <div class="activity-meta">
-                                <div>📍 <strong>Địa điểm:</strong> Khu làm việc khu A</div>
-                                <div>⏱ <strong>Thời gian làm:</strong> 2.5 tiếng</div>
-                                <div>📅 <strong>Ngày giờ:</strong> 16/05/2026 - 14:00</div>
-                            </div>
-                            <div class="activity-comment">
-                                <strong>Comment từ Intern:</strong> "Sửa giao diện responsive rất chuẩn xác, code sạch sẽ."
-                            </div>
-                            <div class="card-actions">
-                                <button class="btn-card view" onclick="openActivityModal('view', 2)">View</button>
-                                <button class="btn-card edit" onclick="openActivityModal('edit', 2)">Edit</button>
-                            </div>
-                        </div>
-
                     </div>
+
                 </div>
             </div>
 
@@ -143,6 +109,8 @@
             </div>
 
             <form id="activity-form" onsubmit="handleFormSubmit(event)">
+                <input type="hidden" id="form-activity-id" />
+
                 <div class="form-group">
                     <label>Tên hoạt động</label>
                     <input type="text" id="form-name" required placeholder="Ví dụ: Review code, Fix Bug UI...">
@@ -166,7 +134,7 @@
 
                 <div class="form-group">
                     <label>Miêu tả chi tiết công việc</label>
-                    <textarea id="form-desc" placeholder="Mô tả tóm tắt nội dung Intern đã thực hiện..."></textarea>
+                    <textarea id="form-desc" required placeholder="Mô tả tóm tắt nội dung Intern đã thực hiện..."></textarea>
                 </div>
 
                 <div class="form-group" style="border-top: 2px dashed #cbd5e1; padding-top: 15px; margin-top: 20px;">
@@ -183,24 +151,8 @@
     </div>
 
     <script>
-        const mockDataActivities = {
-            1: {
-                name: "Nghiên cứu cấu trúc Dự án",
-                location: "Phòng họp tầng 2",
-                datetime: "2026-05-16T08:30",
-                duration: "4 tiếng",
-                desc: "Đọc hiểu cấu trúc source code gốc của hệ thống quản lý.",
-                comment: "Nắm bắt cấu trúc thư mục code tốt, cần đọc kỹ thêm tài liệu thiết kế database."
-            },
-            2: {
-                name: "Fix bug UI trang Dashboard",
-                location: "Khu làm việc khu A",
-                datetime: "2026-05-16T14:00",
-                duration: "2.5 tiếng",
-                desc: "Sửa lỗi tràn layout trên thiết bị di động của danh sách bảng biểu.",
-                comment: "Sửa giao diện responsive rất chuẩn xác, code sạch sẽ."
-            }
-        };
+        const pairKey = "pair-01";
+        let currentFormMode = 'create'; // Biến ghi nhớ trạng thái form
 
         function navigateToDashboard() {
             document.getElementById('intern-detail-view').style.display = 'none';
@@ -210,56 +162,128 @@
         function openInternDetail(name, email, phone) {
             document.getElementById('intern-list-view').style.display = 'none';
             document.getElementById('intern-detail-view').style.display = 'block';
-
             document.getElementById('target-intern-name').innerText = name;
             document.getElementById('target-intern-email').innerText = email;
             document.getElementById('target-intern-phone').innerText = phone;
+
+            loadMentorActivities();
         }
 
-        function openActivityModal(mode, id = null) {
+        // 1. Hàm GET nạp danh sách card
+        function loadMentorActivities() {
+            fetch(`/api/activities/getbykey?pairKey=${pairKey}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Không thể tải danh sách hoạt động từ API!");
+                    return response.json();
+                })
+                .then(logs => {
+                    const container = document.getElementById('mentor-log-container');
+                    container.innerHTML = "";
+
+                    if (logs.length === 0) {
+                        container.innerHTML = `<div style="text-align:center; color:#64748b; padding: 25px; background:#f8fafc; border-radius:12px; border: 1px dashed #cbd5e1;">Chưa có hoạt động nhật ký nào được ghi nhận cho Intern này.</div>`;
+                        return;
+                    }
+
+                    logs.forEach(log => {
+                        const card = document.createElement('div');
+                        card.className = "activity-card";
+
+                        // Định dạng hiển thị chuỗi ngày tháng cho đẹp mắt trên giao diện card
+                        let displayDate = log.Date ? log.Date.replace('T', ' ') : '';
+
+                        card.innerHTML = `
+                            <div class="activity-header">
+                                <span class="activity-title">${log.Title}</span>
+                                <span class="badge" style="background:#e2e8f0; color:#334155">Task #10${log.Id}</span>
+                            </div>
+                            <div class="activity-meta">
+                                <div>📍 <strong>Địa điểm:</strong> ${log.Location}</div>
+                                <div>⏱ <strong>Thời gian làm:</strong> ${log.Duration}</div>
+                                <div>📅 <strong>Ngày giờ:</strong> ${displayDate}</div>
+                            </div>
+                            <p style="font-size:14px; color:#475569; margin-bottom:12px; line-height:1.5; padding: 0 5px;">
+                                ${log.Description}
+                            </p>
+                            <div class="activity-comment">
+                                <strong>Comment từ Intern:</strong> "${log.InternComment || "Intern chưa có phản hồi về hoạt động này."}"
+                            </div>
+                            <div class="card-actions">
+                                <button class="btn-card view" onclick="viewSingleLogDetail(${log.Id}, '${log.Title.replace(/'/g, "\\'")}', '${log.Location.replace(/'/g, "\\'")}', '${log.Date}', '${log.Duration.replace(/'/g, "\\'")}', '${log.Description.replace(/'/g, "\\'")}', '${(log.InternComment || "").replace(/'/g, "\\'")}')">View</button>
+
+                                <button class="btn-card edit" style="background: #ffc107; color: #334155;" onclick="openActivityModal('edit', ${log.Id}, '${log.Title.replace(/'/g, "\\'")}', '${log.Location.replace(/'/g, "\\'")}', '${log.Date}', '${log.Duration.replace(/'/g, "\\'")}', '${log.Description.replace(/'/g, "\\'")}', '${(log.InternComment || "").replace(/'/g, "\\'")}')">Edit</button>
+
+                                <button class="btn-card" style="background: #ef4444; color: white;" onclick="deleteActivityByMentor(${log.Id})">Xóa</button>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error("Lỗi tải API:", error);
+                    document.getElementById('mentor-log-container').innerHTML = `<div style="color:#ef4444; text-align:center; padding:15px;">❌ Lỗi kết nối dữ liệu Server C#!</div>`;
+                });
+        }
+
+        // Hàm đổ dữ liệu lên Modal xem chi tiết (Read-only) khi bấm View
+        function viewSingleLogDetail(id, title, location, date, duration, desc, comment) {
             const modal = document.getElementById('activity-modal');
-            const title = document.getElementById('modal-title');
+            document.getElementById('modal-title').innerText = "🔍 Chi tiết hoạt động";
+            document.getElementById('btn-submit-form').style.display = "none";
+
+            document.getElementById('form-name').value = title;
+            document.getElementById('form-location').value = location;
+            document.getElementById('form-datetime').value = date;
+            document.getElementById('form-duration').value = duration;
+            document.getElementById('form-desc').value = desc;
+            document.getElementById('form-comment').value = comment || "Intern chưa để lại phản hồi.";
+
+            enableFormInputs(false);
+            modal.classList.add('open');
+        }
+
+        // Hàm mở Modal thông minh (Phân biệt chế độ Create / Edit)
+        function openActivityModal(mode, id = null, title = '', location = '', date = '', duration = '', desc = '', comment = '') {
+            const modal = document.getElementById('activity-modal');
+            const titleHeader = document.getElementById('modal-title');
             const submitBtn = document.getElementById('btn-submit-form');
 
-            modal.classList.add('open');
+            currentFormMode = mode;
+            enableFormInputs(true);
+            document.getElementById('form-comment').disabled = true;
 
             if (mode === 'create') {
-                title.innerText = "✍ Ghi nhận hoạt động mới";
+                titleHeader.innerText = "✍ Ghi nhận hoạt động mới";
                 submitBtn.style.display = "block";
                 submitBtn.innerText = "Submit";
                 document.getElementById('activity-form').reset();
-
-                enableFormInputs(true);
-                document.getElementById('form-comment').disabled = true;
+                document.getElementById('form-activity-id').value = "";
             }
-            else if (mode === 'view' && id) {
-                title.innerText = "🔍 Chi tiết hoạt động";
-                submitBtn.style.display = "none";
-                fillFormData(mockDataActivities[id]);
-                enableFormInputs(false);
-            }
-            else if (mode === 'edit' && id) {
-                title.innerText = "✏ Chỉnh sửa thông tin hoạt động";
+            else if (mode === 'edit') {
+                titleHeader.innerText = "✏ Chỉnh sửa thông tin hoạt động";
                 submitBtn.style.display = "block";
                 submitBtn.innerText = "Save Changes";
-                fillFormData(mockDataActivities[id]);
 
-                enableFormInputs(true);
-                document.getElementById('form-comment').disabled = true;
+                document.getElementById('form-activity-id').value = id;
+                document.getElementById('form-name').value = title;
+                document.getElementById('form-location').value = location;
+                document.getElementById('form-datetime').value = date;
+                document.getElementById('form-duration').value = duration;
+                document.getElementById('form-desc').value = desc;
+                document.getElementById('form-comment').value = comment || "Intern chưa để lại phản hồi.";
             }
+
+            modal.classList.add('open');
         }
 
+        // ĐÃ BỔ SUNG: Hàm đóng modal điều khiển tắt class overlay
         function closeActivityModal() {
             document.getElementById('activity-modal').classList.remove('open');
-        }
-
-        function fillFormData(data) {
-            document.getElementById('form-name').value = data.name;
-            document.getElementById('form-location').value = data.location;
-            document.getElementById('form-datetime').value = data.datetime;
-            document.getElementById('form-duration').value = data.duration;
-            document.getElementById('form-desc').value = data.desc;
-            document.getElementById('form-comment').value = data.comment || "";
         }
 
         function enableFormInputs(status) {
@@ -271,16 +295,76 @@
 
         function handleFormSubmit(event) {
             event.preventDefault();
-            alert("Hệ thống ASP.NET Web API sẽ ghi nhận xử lý luồng dữ liệu JSON này thành công!");
-            closeActivityModal();
-        }
 
-        function handleLogout() {
-            const confirmLogout = confirm("Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?");
-            if (confirmLogout) {
-                alert("Đang đăng xuất khỏi hệ thống...");
-                window.location.href = "login.html";
+            const id = document.getElementById('form-activity-id').value;
+            const activityData = {
+                PairKey: pairKey,
+                Title: document.getElementById('form-name').value,
+                Location: document.getElementById('form-location').value,
+                Date: document.getElementById('form-datetime').value,
+                Duration: document.getElementById('form-duration').value,
+                Description: document.getElementById('form-desc').value,
+                InternComment: ""
+            };
+
+            let apiUrl = '/api/activities/create';
+            // 👇 LUÔN LUÔN ĐỂ POST ĐỂ NÉ BỘ LỌC CHẶN CỦA SERVER 👇
+            let httpMethod = 'POST';
+
+            if (currentFormMode === 'edit') {
+                // Đổi đường dẫn sang một router POST riêng cho việc Update
+                apiUrl = `/api/activities/update/${id}`;
             }
+
+            fetch(apiUrl, {
+                method: httpMethod,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(activityData)
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Gặp sự cố xử lý dữ liệu!");
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        alert(result.message);
+                        closeActivityModal();
+                        loadMentorActivities();
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi thực thi form:", error);
+                    alert("Không thể hoàn tất thao tác biểu mẫu!");
+                });
+        }
+        // 3. Hàm DELETE xóa nhật ký
+        function deleteActivityByMentor(id) {
+            if (!confirm("Bạn có chắc chắn muốn xóa vĩnh viễn hoạt động này không? Dữ liệu bên màn hình của Intern cũng sẽ mất theo.")) {
+                return;
+            }
+
+            fetch(`/api/activities/delete/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Server từ chối thực hiện lệnh xóa!");
+                    return response.json();
+                })
+                .then(result => {
+                    if (result.success) {
+                        alert(result.message);
+                        loadMentorActivities();
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi DELETE API:", error);
+                    alert("Không thể xóa hoạt động. Vui lòng rà soát lại kết nối!");
+                });
         }
     </script>
 </body>
